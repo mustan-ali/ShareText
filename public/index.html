@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Share Text</title>
+</head>
+
+<body>
+    <textarea id="textInput" placeholder="Type your text here"></textarea>
+    <button onclick="shareText()">Share Text</button>
+    <button onclick="clearText()">Clear Text</button>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        const socket = io();
+
+        function shareText() {
+            const textInput = document.getElementById('textInput');
+            const newText = textInput.value;
+            socket.emit('updateText', newText);
+        }
+
+        function clearText() {
+            socket.emit('clearText');
+        }
+
+        socket.on('updateText', (text) => {
+            const textInput = document.getElementById('textInput');
+            textInput.value = text;
+        });
+    </script>
+</body>
+
+</html>
